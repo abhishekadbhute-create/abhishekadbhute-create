@@ -123,12 +123,7 @@
 
 <br/>
 
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=abhishekadbhute-create&layout=compact&theme=radical&hide_border=true&bg_color=0D0221&title_color=00F5FF&text_color=c9d1d9" width="49%"/>
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=abhishekadbhute-create&theme=react-dark&hide_border=true&bg_color=0D0221&color=00F5FF&line=8A2BE2&point=ffffff" width="49%"/>
-
-<br/><br/>
-
-<img src="https://github-profile-trophy.vercel.app/?username=abhishekadbhute-create&theme=radical&no-frame=true&no-bg=true&margin-w=8&column=7" width="90%"/>
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=abhishekadbhute-create&theme=react-dark&hide_border=true&bg_color=0D0221&color=00F5FF&line=8A2BE2&point=ffffff" width="98%"/>
 
 </div>
 
@@ -142,7 +137,7 @@
 
 <br/>
 
-
+<img src="https://img.shields.io/badge/LeetCode-200%2B_Problems_Solved-8A2BE2?style=for-the-badge&logo=leetcode&logoColor=00F5FF&labelColor=0D0221" />
 
 </div>
 
