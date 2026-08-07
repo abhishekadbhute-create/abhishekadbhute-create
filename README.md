@@ -63,7 +63,7 @@
 
 ## 🧬 &nbsp;ABOUT THE SYSTEM
 
-<img align="right" src="https://raw.githubusercontent.com/mayhemantt/mayhemantt/Update/svg/Bottom.svg" width="320"/>
+<img align="right" src="https://user-images.githubusercontent.com/74038190/221352989-518609ab-b4d1-459e-929f-a08cd2bd9b3c.gif" width="280"/>
 
 - 🎓 &nbsp;Computer Science student at **IIIT Naya Raipur**
 - 🧠 &nbsp;Deep diving into **Machine Learning**, **Data Science** & **LLMs**
