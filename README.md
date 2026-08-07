@@ -23,8 +23,6 @@
 
 </div>
 
-## ⚡ &nbsp;AI SYSTEM STATUS
-
 <div align="center">
 
 <table>
@@ -144,7 +142,7 @@
 
 <br/>
 
-<img src="https://img.shields.io/badge/LeetCode-200%2B_Problems_Solved-8A2BE2?style=for-the-badge&logo=leetcode&logoColor=00F5FF&labelColor=0D0221" />
+
 
 </div>
 
