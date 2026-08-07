@@ -1,7 +1,7 @@
 # Hi there, I'm Abhishek 👋
 
 <p align="center">
-  <em>CSE Student at IIIT Naya Raipur · Building AI Applications with LLMs & AI Agents · 💻 Passionate about Full Stack Development</em>
+  <em>ECE Student at IIIT Naya Raipur · Passionate about Machine Learning, Data Science, LLMs & AI Agents · 💻 AI & Full Stack Developer</em>
 </p>
 
 <p align="center">
