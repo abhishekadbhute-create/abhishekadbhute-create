@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NEURAL SNAKE // Abhishek Adbhute</title>
+<style>
+  :root{
+    --cyan:#00F5FF;
+    --purple:#8A2BE2;
+    --bg:#05030d;
+    --panel:#0d0821;
+    --grid-line: rgba(0,245,255,0.07);
+    --text:#d9e7ff;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    height:100%;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(138,43,226,0.25), transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(0,245,255,0.15), transparent 50%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Courier New', ui-monospace, monospace;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .wrap{
+    width:min(92vw, 640px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+  }
+  .title{
+    font-size:clamp(22px, 5vw, 34px);
+    letter-spacing:4px;
+    font-weight:700;
+    color:var(--cyan);
+    text-shadow: 0 0 8px rgba(0,245,255,0.7), 0 0 22px rgba(0,245,255,0.35);
+    text-align:center;
+  }
+  .subtitle{
+    font-size:12px;
+    letter-spacing:3px;
+    color:var(--purple);
+    opacity:0.85;
+    text-transform:uppercase;
+    text-align:center;
+    margin-top:-12px;
+  }
+  .hud{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    letter-spacing:2px;
+    padding:0 4px;
+  }
+  .hud span{color:var(--cyan);}
+  .board-frame{
+    position:relative;
+    padding:10px;
+    border-radius:14px;
+    background:linear-gradient(145deg, rgba(138,43,226,0.18), rgba(0,245,255,0.08));
+    border:1px solid rgba(0,245,255,0.35);
+    box-shadow:
+      0 0 25px rgba(138,43,226,0.35),
+      inset 0 0 30px rgba(0,245,255,0.08);
+  }
+  canvas{
+    display:block;
+    background:
+      repeating-linear-gradient(0deg, var(--grid-line) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 24px),
+      var(--panel);
+    border-radius:8px;
+  }
+  .overlay{
+    position:absolute;
+    inset:10px;
+    border-radius:8px;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    background:rgba(5,3,13,0.88);
+    backdrop-filter: blur(2px);
+    text-align:center;
+    padding:20px;
+  }
+  .overlay.show{display:flex;}
+  .overlay h2{
+    margin:0;
+    color:var(--cyan);
+    letter-spacing:3px;
+    font-size:20px;
+    text-shadow:0 0 10px rgba(0,245,255,0.7);
+  }
+  .overlay p{
+    margin:0;
+    font-size:12px;
+    color:var(--text);
+    opacity:0.75;
+    letter-spacing:1px;
+    max-width:260px;
+  }
+  button{
+    font-family:inherit;
+    letter-spacing:2px;
+    font-size:13px;
+    padding:10px 22px;
+    border-radius:8px;
+    border:1px solid var(--cyan);
+    background:linear-gradient(135deg, rgba(0,245,255,0.15), rgba(138,43,226,0.25));
+    color:var(--cyan);
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  button:hover{
+    transform:translateY(-1px);
+    box-shadow:0 0 18px rgba(0,245,255,0.5);
+  }
+  button:active{ transform:translateY(0); }
+
+  .dpad{
+    display:grid;
+    grid-template-columns:56px 56px 56px;
+    grid-template-rows:56px 56px 56px;
+    gap:8px;
+    touch-action:none;
+  }
+  .dpad button{
+    padding:0;
+    width:56px;height:56px;
+    font-size:18px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .dpad .up{grid-column:2;grid-row:1;}
+  .dpad .left{grid-column:1;grid-row:2;}
+  .dpad .center{grid-column:2;grid-row:2; border-color:var(--purple); color:var(--purple);}
+  .dpad .right{grid-column:3;grid-row:2;}
+  .dpad .down{grid-column:2;grid-row:3;}
+
+  .hint{
+    font-size:11px;
+    opacity:0.55;
+    letter-spacing:1px;
+    text-align:center;
+  }
+  @media (max-width: 520px){
+    .dpad{ display:grid; }
+  }
+  @media (min-width: 521px){
+    .dpad{ display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="title">NEURAL SNAKE</div>
+    <div class="subtitle">AI Agent Training Simulation</div>
+  </div>
+
+  <div class="hud">
+    <div>SCORE: <span id="score">0</span></div>
+    <div>BEST: <span id="best">0</span></div>
+  </div>
+
+  <div class="board-frame">
+    <canvas id="game" width="480" height="480"></canvas>
+    <div class="overlay show" id="overlay">
+      <h2 id="overlayTitle">SYSTEM READY</h2>
+      <p id="overlayText">Use arrow keys or WASD to move. Press space or tap start to begin.</p>
+      <button id="startBtn">▶ START</button>
+    </div>
+  </div>
+
+  <div class="dpad">
+    <button class="up" data-dir="up">▲</button>
+    <button class="left" data-dir="left">◀</button>
+    <button class="center" id="pauseBtn">⏸</button>
+    <button class="right" data-dir="right">▶</button>
+    <button class="down" data-dir="down">▼</button>
+  </div>
+
+  <div class="hint">ARROW KEYS / WASD TO MOVE · SPACE TO PAUSE</div>
+</div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const GRID = 20;
+  const CELLS = canvas.width / GRID;
+
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+  const overlay = document.getElementById('overlay');
+  const overlayTitle = document.getElementById('overlayTitle');
+  const overlayText = document.getElementById('overlayText');
+  const startBtn = document.getElementById('startBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+
+  let snake, dir, nextDir, food, score, best, running, paused, loopId, speed;
+
+  best = parseInt(localStorage.getItem('neuralSnakeBest') || '0', 10);
+  bestEl.textContent = best;
+
+  function reset(){
+    snake = [{x:9,y:12},{x:8,y:12},{x:7,y:12}];
+    dir = {x:1,y:0};
+    nextDir = {x:1,y:0};
+    score = 0;
+    speed = 120;
+    scoreEl.textContent = score;
+    placeFood();
+    running = true;
+    paused = false;
+  }
+
+  function placeFood(){
+    let valid = false;
+    while(!valid){
+      food = { x: Math.floor(Math.random()*CELLS), y: Math.floor(Math.random()*CELLS) };
+      valid = !snake.some(s => s.x === food.x && s.y === food.y);
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // food
+    ctx.save();
+    ctx.shadowColor = '#8A2BE2';
+    ctx.shadowBlur = 14;
+    ctx.fillStyle = '#8A2BE2';
+    ctx.beginPath();
+    ctx.arc(food.x*GRID + GRID/2, food.y*GRID + GRID/2, GRID/2.6, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+
+    // snake
+    snake.forEach((seg, i) => {
+      const t = i / snake.length;
+      ctx.fillStyle = i === 0 ? '#00F5FF' : `rgba(0, ${Math.floor(245 - t*120)}, ${Math.floor(255 - t*80)}, ${1 - t*0.5})`;
+      ctx.save();
+      if(i === 0){
+        ctx.shadowColor = '#00F5FF';
+        ctx.shadowBlur = 12;
+      }
+      const pad = 2;
+      ctx.beginPath();
+      const r = 5;
+      const x = seg.x*GRID+pad, y = seg.y*GRID+pad, w = GRID-pad*2, h = GRID-pad*2;
+      ctx.moveTo(x+r,y);
+      ctx.arcTo(x+w,y,x+w,y+h,r);
+      ctx.arcTo(x+w,y+h,x,y+h,r);
+      ctx.arcTo(x,y+h,x,y,r);
+      ctx.arcTo(x,y,x+w,y,r);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  function tick(){
+    if(!running || paused) return;
+    dir = nextDir;
+    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    if(head.x < 0 || head.x >= CELLS || head.y < 0 || head.y >= CELLS || snake.some(s => s.x===head.x && s.y===head.y)){
+      return gameOver();
+    }
+
+    snake.unshift(head);
+
+    if(head.x === food.x && head.y === food.y){
+      score++;
+      scoreEl.textContent = score;
+      if(score > best){
+        best = score;
+        bestEl.textContent = best;
+        localStorage.setItem('neuralSnakeBest', best);
+      }
+      placeFood();
+      speed = Math.max(60, speed - 2);
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  function gameOver(){
+    running = false;
+    overlayTitle.textContent = 'CONNECTION LOST';
+    overlayText.textContent = `Final score: ${score}. Press start to reboot the agent.`;
+    startBtn.textContent = '↻ RESTART';
+    overlay.classList.add('show');
+    clearInterval(loopId);
+  }
+
+  function startLoop(){
+    clearInterval(loopId);
+    loopId = setInterval(tick, speed);
+  }
+
+  function restartSpeedLoop(){
+    // dynamic speed adjustment
+    clearInterval(loopId);
+    loopId = setInterval(tick, speed);
+  }
+
+  let lastSpeed = null;
+  function frame(){
+    if(running && !paused){
+      if(lastSpeed !== speed){
+        lastSpeed = speed;
+        restartSpeedLoop();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  startBtn.addEventListener('click', () => {
+    overlay.classList.remove('show');
+    reset();
+    draw();
+    lastSpeed = speed;
+    startLoop();
+  });
+
+  pauseBtn.addEventListener('click', togglePause);
+
+  function togglePause(){
+    if(!running) return;
+    paused = !paused;
+    pauseBtn.textContent = paused ? '▶' : '⏸';
+    if(paused){
+      overlayTitle.textContent = 'PAUSED';
+      overlayText.textContent = 'Press space or tap resume to continue.';
+      startBtn.textContent = '▶ RESUME';
+      overlay.classList.add('show');
+    } else {
+      overlay.classList.remove('show');
+    }
+  }
+
+  startBtn.addEventListener('click', () => {
+    if(paused){
+      paused = false;
+      pauseBtn.textContent = '⏸';
+    }
+  });
+
+  function setDir(d){
+    if(d==='up' && dir.y===0) nextDir = {x:0,y:-1};
+    if(d==='down' && dir.y===0) nextDir = {x:0,y:1};
+    if(d==='left' && dir.x===0) nextDir = {x:-1,y:0};
+    if(d==='right' && dir.x===0) nextDir = {x:1,y:0};
+  }
+
+  document.querySelectorAll('.dpad button[data-dir]').forEach(btn=>{
+    btn.addEventListener('click', () => setDir(btn.dataset.dir));
+  });
+
+  window.addEventListener('keydown', (e) => {
+    const k = e.key.toLowerCase();
+    if(['arrowup','w'].includes(k)) setDir('up');
+    else if(['arrowdown','s'].includes(k)) setDir('down');
+    else if(['arrowleft','a'].includes(k)) setDir('left');
+    else if(['arrowright','d'].includes(k)) setDir('right');
+    else if(k === ' '){
+      e.preventDefault();
+      if(!running){
+        overlay.classList.remove('show');
+        reset(); draw(); lastSpeed = speed; startLoop();
+      } else {
+        togglePause();
+      }
+    }
+  });
+
+  draw();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
