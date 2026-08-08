@@ -144,7 +144,6 @@
 <br/>
 
 <div align="center"> <img src="https://raw.githubusercontent.com/abhishekadbhute-create/abhishekadbhute-create/output/snake-dark.svg" width="90%"/> </div>
- <br/><br/> <a href="https://abhishekadbhute-create.github.io/abhishekadbhute-create/snake-game.html"> <img src="https://img.shields.io/badge/🎮_PLAY_NEURAL_SNAKE-00F5FF?style=for-the-badge&labelColor=0D0221" /> </a>
 
 ## 🗺️ &nbsp;CURRENT LEARNING ROADMAP
 
