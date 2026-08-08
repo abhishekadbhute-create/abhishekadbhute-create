@@ -31,12 +31,12 @@
 
 ```yaml
 ┌────────────────────────────────────────────────────────────────┐
-│  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  NEURAL CORE // BOOT LOG  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│
+│ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  NEURAL CORE // BOOT LOG  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │
 ├────────────────────────────────────────────────────────────────┤
 │                                                                │
 │   USER ................. Abhishek Adbhute                      │
 │   STATUS ................  ONLINE                              │
-│   ROLE .................. ECE Student           │
+│   ROLE .................. ECE Student                          │
 │   COLLEGE ............... IIIT Naya Raipur                     │
 │   MISSION ............... Build Intelligent AI Applications    │
 │   LOCATION .............. India                                │
