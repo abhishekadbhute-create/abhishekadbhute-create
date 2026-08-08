@@ -143,6 +143,8 @@
 
 <br/>
 
+<div align="center"> <img src="https://raw.githubusercontent.com/abhishekadbhute-create/abhishekadbhute-create/output/snake-dark.svg" width="90%"/> </div>
+
 ## 🗺️ &nbsp;CURRENT LEARNING ROADMAP
 
 <div align="center">
